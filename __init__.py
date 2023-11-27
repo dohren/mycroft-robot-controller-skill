@@ -14,8 +14,6 @@ class RobotController(MycroftSkill):
         MycroftSkill.__init__(self)
 
         super().__init__('pose_stamped_publisher')
-
-        # Check if rclpy has been initialized
         if not rclpy.ok():
             rclpy.init(args=None)
         self.node = rclpy.create_node('mycroft_ros2_skill_node')
@@ -28,9 +26,7 @@ class RobotController(MycroftSkill):
             csv_reader = csv.reader(file, delimiter=";")
             
             next(csv_reader)
-
             for row in csv_reader:
-                # Each row is a list of values, so you can access them by index
                 goal, pos_x, pos_y, pos_z, orient_x, orient_y, orient_z, orient_w = row
 
                 pose = {
@@ -61,8 +57,6 @@ class RobotController(MycroftSkill):
             self.speak_dialog('ich kenne keinen ort: ' + ort, data={'ort': ort})
 
     def publish_pose_stamped(self, goal):
-        # Create a PoseStamped message
-
         pose_stamped_msg = PoseStamped()
         pose_stamped_msg.header.stamp = self.node.get_clock().now().to_msg()
         pose_stamped_msg.header.frame_id = 'map'  # Set the frame ID
@@ -73,9 +67,6 @@ class RobotController(MycroftSkill):
         pose_stamped_msg.pose.orientation.y = goal["orientation"]["y"]
         pose_stamped_msg.pose.orientation.z = goal["orientation"]["z"]
         pose_stamped_msg.pose.orientation.w = goal["orientation"]["w"]
-        
-
-        # Publish the PoseStamped message
         self.publisher.publish(pose_stamped_msg)
 
 
