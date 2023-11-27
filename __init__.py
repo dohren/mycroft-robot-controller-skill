@@ -28,7 +28,6 @@ class RobotController(MycroftSkill):
             next(csv_reader)
             for row in csv_reader:
                 goal, pos_x, pos_y, pos_z, orient_x, orient_y, orient_z, orient_w = row
-
                 pose = {
                         "position": {
                             "x": float(pos_x),
@@ -42,7 +41,6 @@ class RobotController(MycroftSkill):
                             "w": float(orient_w)
                         }
                     }
-                
                 self.goals[goal] = pose
 
     @intent_file_handler('controller.robot.intent')
